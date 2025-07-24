@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База Знаний 2.0 - Регистрация</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #1e2235;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background-color: #2d2f50;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            color: #f9b17a;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #c2c2d2;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #f9b17a;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background-color: #424769;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            background-color: #4a5082;
+            box-shadow: 0 0 0 2px rgba(249, 177, 122, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: #c2c2d2;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .submit-btn {
+            flex: 1;
+            background-color: #f9b17a;
+            color: #2d2f50;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #e09858;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background-color: #6b7280;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cancel-btn {
+            flex: 0 0 auto;
+            background-color: #6b7280;
+            color: #ffffff;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background-color: #5a6470;
+            transform: translateY(-1px);
+        }
+
+        .cancel-btn:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .result.success {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+            color: #22543d;
+        }
+
+        .result.error {
+            background: #fed7d7;
+            border: 2px solid #fc8181;
+            color: #742a2a;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .telegram-note {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #2b6cb0;
+            line-height: 1.5;
+        }
+
+        .telegram-note strong {
+            color: #1e4a72;
+        }
+
+        .required-note {
+            color: #c2c2d2;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 30px 20px;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .cancel-btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📚</div>
+            <h1 class="title">База Знаний 2.0</h1>
+            <p class="subtitle">Регистрация консультантов по питанию</p>
+        </div>
+
+        <div class="telegram-note">
+            <strong>📱 Важно:</strong> После заполнения формы доступ к базе знаний будет подтверждаться вашим ТАБ Тим. После подтверждения вы получите доступ к Telegram-боту с умным поиском и ИИ-помощником.
+        </div>
+
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="fullName">👤 Фамилия и Имя *</label>
+                <input type="text" id="fullName" name="fullName" required 
+                       maxlength="100" pattern="^[А-Яа-яЁё\s-]+$">
+            </div>
+
+            <div class="form-group">
+                <label for="consultantId">🆔 ID консультанта *</label>
+                <input type="text" id="consultantId" name="consultantId" required 
+                       pattern="^[A-Z0-9]+$" maxlength="20">
+            </div>
+
+            <div class="form-group">
+                <label for="city">🏙️ Город *</label>
+                <input type="text" id="city" name="city" required maxlength="100">
+            </div>
+
+            <div class="form-group">
+                <label for="sponsor">👨‍💼 Фамилия и Имя спонсора *</label>
+                <input type="text" id="sponsor" name="sponsor" required 
+                       pattern="^[А-Яа-яЁё\s-]+$" maxlength="100">
+            </div>
+
+            <div class="form-group">
+                <label for="tabTeam">🎯 Фамилия и Имя ТАБ Тим *</label>
+                <input type="text" id="tabTeam" name="tabTeam" required 
+                       pattern="^[А-Яа-яЁё\s-]+$" maxlength="100">
+            </div>
+
+            <div class="required-note">* - обязательные поля</div>
+
+            <div class="button-group">
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    🚀 Зарегистрироваться
+                </button>
+                <button type="button" class="cancel-btn" id="cancelBtn">
+                    ❌ Отмена
+                </button>
+            </div>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const WEBHOOK_URL = 'https://n8napps.online/webhook/bz2-user-registration';
+        
+        // Инициализация Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        let user = tg.initDataUnsafe?.user;
+        
+        // Обработчик кнопки отмены
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            if (tg) {
+                tg.close();
+            } else {
+                window.history.back();
+            }
+        });
+        
+        // Автоматическое заполнение данных если доступно
+        if (user) {
+            console.log('📱 Telegram пользователь:', user);
+        }
+        
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const result = document.getElementById('result');
+            
+            // Проверка Telegram WebApp
+            if (!user?.id) {
+                result.className = 'result error';
+                result.innerHTML = '<strong>❌ Ошибка:</strong> Форма должна открываться из Telegram бота';
+                result.style.display = 'block';
+                return;
+            }
+            
+            // Подготовка UI
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span>Отправляем...';
+            result.style.display = 'none';
+            
+            // Сбор данных формы (соответствует схеме BZ2_User_Registration)
+            const formData = {
+                fullname: document.getElementById('fullName').value.trim(),
+                id: document.getElementById('consultantId').value.trim().toUpperCase(),
+                city: document.getElementById('city').value.trim(),
+                sponsor: document.getElementById('sponsor').value.trim(),
+                tab: document.getElementById('tabTeam').value.trim(),
+                tgid: user.id,
+                username: user.username || null
+            };
+
+            console.log('📤 Отправляем данные регистрации:', formData);
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                console.log(`📊 Response status: ${response.status}`);
+                const data = await response.json();
+                console.log('📥 Ответ сервера:', data);
+
+                if (response.ok && data.success) {
+                    result.className = 'result success';
+                    result.innerHTML = `
+                        <strong>✅ Регистрация отправлена!</strong><br><br>
+                        👤 ${formData.fullname}<br>
+                        🆔 ID: ${formData.id}<br>
+                        🏙️ ${formData.city}<br>
+                        🎯 ТАБ Тим: ${formData.tab}<br><br>
+                        <strong>⏳ Ожидайте подтверждения</strong><br>
+                        Ваш ТАБ Тим получит уведомление и подтвердит доступ к базе знаний.
+                    `;
+                    
+                    // Очистка формы после успешной регистрации
+                    document.getElementById('registrationForm').reset();
+                    
+                    // Уведомление Telegram WebApp о успехе
+                    if (tg) {
+                        tg.showAlert('✅ Регистрация отправлена! Ожидайте подтверждения от ТАБ Тим.');
+                    }
+                    
+                } else {
+                    throw new Error(data.message || 'Неизвестная ошибка сервера');
+                }
+
+            } catch (error) {
+                console.error('❌ Ошибка регистрации:', error);
+                result.className = 'result error';
+                result.innerHTML = `
+                    <strong>❌ Ошибка регистрации</strong><br>
+                    ${error.message}<br><br>
+                    Проверьте введенные данные и попробуйте снова.
+                `;
+                
+                // Уведомление Telegram WebApp об ошибке
+                if (tg) {
+                    tg.showAlert('❌ Ошибка регистрации: ' + error.message);
+                }
+                
+            } finally {
+                // Восстановление UI
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '🚀 Зарегистрироваться';
+                result.style.display = 'block';
+                
+                // Прокрутка к результату
+                result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+
+        // Автоматическое преобразование Consultant ID в верхний регистр
+        document.getElementById('consultantId').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        console.log('📚 Форма регистрации БЗ 2.0 загружена');
+        console.log('📡 Webhook URL:', WEBHOOK_URL);
+        console.log('📱 Telegram WebApp:', !!user ? 'инициализирован' : 'недоступен');
+    </script>
+</body>
+</html>
