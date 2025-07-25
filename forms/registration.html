@@ -311,7 +311,7 @@
                 console.error('❌ Ошибка регистрации:', error);
 
                 // Проверяем тип ошибки
-                const isDuplicateUser = error.message.includes('уже зарегистрированы в системе');
+                const isDuplicateUser = error.message.includes('уже зарегистрированы');
 
                 if (isDuplicateUser) {
                     // Для дублирующей регистрации - информационное сообщение
@@ -320,11 +320,6 @@
             <strong>ℹ️ Информация о регистрации</strong><br>
             ${error.message}
         `;
-
-                    // Уведомление Telegram WebApp
-                    if (tg) {
-                        tg.showAlert('ℹ️ ' + error.message);
-                    }
 
                     console.log('ℹ️ Пользователь уже зарегистрирован - показываем информационное сообщение');
 
